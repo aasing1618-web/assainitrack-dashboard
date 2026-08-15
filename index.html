@@ -117,7 +117,7 @@ body{background:#DFDDD5; font-family:'Poppins',sans-serif; color:var(--ink);}
 .station{position:absolute; display:flex; flex-direction:column; align-items:center; transform:translate(-50%,-100%);}
 .station .pin{width:16px;height:16px;border-radius:50% 50% 50% 0; background:var(--navy2); transform:rotate(-45deg); border:2px solid #fff;}
 .truckdot{position:absolute; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:2px solid #fff; transform:translate(-50%,-50%); box-shadow:0 2px 6px rgba(15,30,45,.25);}
-.popup{position:absolute; width:186px; background:#fff; border-radius:12px; padding:11px 12px; box-shadow:0 14px 26px -8px rgba(15,30,45,.35); border:1px solid var(--line);}
+.popup{position:absolute; z-index:4; width:186px; background:#fff; border-radius:12px; padding:11px 12px; box-shadow:0 14px 26px -8px rgba(15,30,45,.35); border:1px solid var(--line);}
 .popup .t{font-size:11.5px; font-weight:800; color:var(--navy2); margin-bottom:5px;}
 .popup .row{display:flex; justify-content:space-between; font-size:9.6px; color:var(--grey); margin-top:3px;}
 .popup .row b{color:var(--ink); font-weight:600;}
@@ -154,11 +154,101 @@ table.proof th{text-align:left; font-size:10.3px; text-transform:uppercase; lett
 table.proof td{padding:11px 10px; font-size:12px; border-bottom:1px solid var(--line); color:var(--ink);}
 table.proof tr:last-child td{border-bottom:none;}
 .statuspill{display:inline-flex; align-items:center; gap:5px; font-size:10.6px; font-weight:700; padding:4px 10px; border-radius:20px;}
+
+/* ===== navigation multi-pages ===== */
+a.navitem{text-decoration:none; cursor:pointer; transition:background .15s, color .15s;}
+a.navitem:hover{background:rgba(255,255,255,.07); color:#fff;}
+a.navitem.active,a.navitem.active:hover{background:rgba(225,134,59,.18); color:var(--amber);}
+.view[hidden]{display:none;}
+
+/* helpers de grille */
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:16px;}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;}
+.mb16{margin-bottom:16px;}
+
+/* barre d'outils : onglets + recherche */
+.toolbar{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:16px;}
+.tabs{display:flex; gap:6px; background:#fff; border:1px solid var(--line); border-radius:11px; padding:4px;}
+.tab{font-size:11.8px; font-weight:600; color:var(--grey); padding:6px 13px; border-radius:8px; border:none; background:none; cursor:pointer; font-family:inherit; display:flex; align-items:center; gap:6px;}
+.tab:hover{color:var(--navy2);}
+.tab.active{background:var(--navy); color:#fff;}
+.tab .n{font-size:10px; font-weight:700; background:rgba(0,0,0,.07); padding:1px 6px; border-radius:20px;}
+.tab.active .n{background:rgba(255,255,255,.18);}
+.searchfield{display:flex; align-items:center; gap:8px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:8px 13px; min-width:250px;}
+.searchfield input{border:none; outline:none; font-family:inherit; font-size:12px; color:var(--ink); background:none; width:100%;}
+.searchfield input::placeholder{color:#9AA6AB;}
+.btn{display:inline-flex; align-items:center; gap:7px; font-family:inherit; font-size:11.8px; font-weight:600; padding:9px 15px; border-radius:10px; border:1px solid var(--line); background:#fff; color:var(--navy2); cursor:pointer;}
+.btn:hover{border-color:#CFCBBE;}
+.btn.primary{background:var(--amber); border-color:var(--amber); color:#fff;}
+.btn.primary:hover{background:#D2782F; border-color:#D2782F;}
+
+/* table de données générique */
+table.dt{width:100%; border-collapse:collapse;}
+table.dt th{text-align:left; font-size:10.3px; text-transform:uppercase; letter-spacing:.05em; color:var(--grey); font-weight:700; padding:0 10px 10px; border-bottom:1px solid var(--line); white-space:nowrap;}
+table.dt td{padding:11px 10px; font-size:12px; border-bottom:1px solid var(--line); color:var(--ink); vertical-align:middle;}
+table.dt tbody tr:last-child td{border-bottom:none;}
+table.dt tbody tr:hover td{background:#FBFAF7;}
+table.dt td.num{font-variant-numeric:tabular-nums; white-space:nowrap;}
+table.dt .ref{font-weight:700; color:var(--navy2);}
+.who2{display:flex; align-items:center; gap:9px;}
+.uav{width:27px;height:27px;border-radius:50%;background:var(--teal-light);color:var(--teal);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;}
+.uav.navy{background:#E3E8ED;color:var(--navy2);}
+.sub2{font-size:10.3px; color:var(--grey); margin-top:1px;}
+.tfoot{display:flex; align-items:center; justify-content:space-between; padding-top:13px; margin-top:2px; border-top:1px solid var(--line); font-size:11px; color:var(--grey);}
+.pager{display:flex; gap:5px;}
+.pager span{min-width:26px; height:26px; border-radius:7px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:var(--navy2); background:#fff;}
+.pager span.on{background:var(--navy); border-color:var(--navy); color:#fff;}
+
+/* barre de progression réutilisable */
+.pbar{height:6px; border-radius:20px; background:#E6E3DA; overflow:hidden; min-width:64px;}
+.pbar i{display:block; height:100%; border-radius:20px;}
+
+/* grande carte (pages Carte / Suivi GPS) */
+.bigmap{position:relative; height:430px; border-radius:12px; overflow:hidden; margin-top:12px; background:
+  radial-gradient(rgba(22,50,74,.14) 1.4px, transparent 1.6px) 0 0/18px 18px, #EEF1EA;}
+.station .lbl{margin-top:5px; font-size:9.6px; font-weight:700; color:var(--navy2); background:rgba(255,255,255,.9); border-radius:5px; padding:2px 6px; white-space:nowrap;}
+.maplegend{display:flex; flex-wrap:wrap; gap:16px; padding:12px 2px 14px; font-size:10.8px; color:var(--grey);}
+.maplegend span{display:flex; align-items:center; gap:6px;}
+.maplegend i{width:10px;height:10px;border-radius:50%; display:inline-block;}
+
+/* liste latérale de suivi */
+.tracklist{display:flex; flex-direction:column; gap:9px; margin-top:12px;}
+.trackrow{border:1px solid var(--line); border-radius:11px; padding:11px 12px; background:var(--cream);}
+.trackrow.on{border-color:var(--teal); background:var(--teal-light);}
+.trackrow .r1{display:flex; align-items:center; justify-content:space-between; gap:8px;}
+.trackrow .id{font-size:12.2px; font-weight:800; color:var(--navy2);}
+.trackrow .r2{font-size:10.5px; color:var(--grey); margin-top:4px;}
+
+/* formulaire (Paramètres) */
+.field{margin-bottom:14px;}
+.field label{display:block; font-size:11px; font-weight:600; color:var(--navy2); margin-bottom:6px;}
+.field input,.field select{width:100%; font-family:inherit; font-size:12px; color:var(--ink); padding:9px 12px; border:1px solid var(--line); border-radius:9px; background:#fff; outline:none;}
+.field input:focus,.field select:focus{border-color:var(--teal);}
+.field .help{font-size:10.2px; color:var(--grey); margin-top:5px;}
+.togglerow{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:12px 0; border-bottom:1px solid var(--line);}
+.togglerow:last-child{border-bottom:none;}
+.togglerow .t{font-size:12px; font-weight:600; color:var(--navy2);}
+.togglerow .s{font-size:10.4px; color:var(--grey); margin-top:2px;}
+.sw{width:36px; height:20px; border-radius:20px; background:#D5D2C7; position:relative; flex:none; cursor:pointer;}
+.sw::after{content:""; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:50%; background:#fff; transition:left .18s;}
+.sw.on{background:var(--teal);}
+.sw.on::after{left:18px;}
+
+/* note d'avertissement maquette */
+.mockwarn{display:flex; align-items:flex-start; gap:9px; background:var(--amber-light); border:1px solid #F0D5B8; border-radius:11px; padding:10px 13px; font-size:11px; color:#8A5620; margin-bottom:16px; line-height:1.45;}
+
+@media (max-width:1180px){
+  .kpirow{grid-template-columns:repeat(3,1fr);}
+  .midrow,.chartrow,.grid2{grid-template-columns:1fr;}
+  .stationsrow{grid-template-columns:repeat(2,1fr);}
+  .grid3,.grid4{grid-template-columns:repeat(2,1fr);}
+}
 </style></head><body>
 <div class="stage"><div class="frame">
 <div class="chrome">
   <div class="dot" style="background:#E5A2A2"></div><div class="dot" style="background:#EBC98A"></div><div class="dot" style="background:#A6CDAE"></div>
-  <div class="url">app.assainitrack.sn/dashboard</div>
+  <div class="url" id="urlbar">app.assainitrack.sn/dashboard</div>
 </div>
 <div class="app">
   <aside class="sidebar">
@@ -179,7 +269,7 @@ table.proof tr:last-child td{border-bottom:none;}
 </svg>
 </div><div class="word"><span class="a">Assaini</span><span class="t">Track</span></div></div>
     <div class="navsection">Pilotage</div>
-    <div class="navitem active"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+    <a class="navitem active" href="#/dashboard" data-route="dashboard"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-layout-dashboard"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -196,8 +286,8 @@ table.proof tr:last-child td{border-bottom:none;}
   <rect width="7" height="9" x="14" y="12" rx="1" />
   <rect width="7" height="5" x="3" y="16" rx="1" />
 </svg>
-<span>Dashboard</span></div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+<span>Dashboard</span></a>
+    <a class="navitem" href="#/vidanges" data-route="vidanges"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-truck"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -215,8 +305,8 @@ table.proof tr:last-child td{border-bottom:none;}
   <circle cx="17" cy="18" r="2" />
   <circle cx="7" cy="18" r="2" />
 </svg>
-<span>Vidanges</span></div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+<span>Vidanges</span></a>
+    <a class="navitem" href="#/gps" data-route="gps"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-navigation"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -230,9 +320,9 @@ table.proof tr:last-child td{border-bottom:none;}
 >
   <polygon points="3 11 22 2 13 21 11 13 3 11" />
 </svg>
-<span>Suivi GPS</span></div>
+<span>Suivi GPS</span></a>
     <div class="navsection">Acteurs</div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+    <a class="navitem" href="#/operateurs" data-route="operateurs"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-users"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -249,8 +339,8 @@ table.proof tr:last-child td{border-bottom:none;}
   <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
   <circle cx="9" cy="7" r="4" />
 </svg>
-<span>Opérateurs</span></div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+<span>Opérateurs</span></a>
+    <a class="navitem" href="#/menages" data-route="menages"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-home"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -265,9 +355,9 @@ table.proof tr:last-child td{border-bottom:none;}
   <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
   <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
 </svg>
-<span>Ménages</span></div>
+<span>Ménages</span></a>
     <div class="navsection">Traçabilité</div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+    <a class="navitem" href="#/paiements" data-route="paiements"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-credit-card"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -282,8 +372,8 @@ table.proof tr:last-child td{border-bottom:none;}
   <rect width="20" height="14" x="2" y="5" rx="2" />
   <line x1="2" x2="22" y1="10" y2="10" />
 </svg>
-<span>Paiements</span></div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+<span>Paiements</span></a>
+    <a class="navitem" href="#/preuves" data-route="preuves"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-qr-code"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -308,8 +398,8 @@ table.proof tr:last-child td{border-bottom:none;}
   <path d="M21 12v.01" />
   <path d="M12 21v-1" />
 </svg>
-<span>Preuves de dépotage</span></div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+<span>Preuves de dépotage</span></a>
+    <a class="navitem" href="#/carte" data-route="carte"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-map"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -325,8 +415,8 @@ table.proof tr:last-child td{border-bottom:none;}
   <path d="M15 5.764v15" />
   <path d="M9 3.236v15" />
 </svg>
-<span>Carte</span></div>
-    <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+<span>Carte</span></a>
+    <a class="navitem" href="#/rapports" data-route="rapports"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-bar-chart-3"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -343,9 +433,9 @@ table.proof tr:last-child td{border-bottom:none;}
   <path d="M13 17V5" />
   <path d="M8 17v-3" />
 </svg>
-<span>Rapports & statistiques</span></div>
+<span>Rapports & statistiques</span></a>
     <div class="sidebar-bottom">
-      <div class="navitem"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
+      <a class="navitem" href="#/parametres" data-route="parametres"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-settings"
   xmlns="http://www.w3.org/2000/svg"
  
@@ -360,7 +450,7 @@ table.proof tr:last-child td{border-bottom:none;}
   <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
   <circle cx="12" cy="12" r="3" />
 </svg>
-<span>Paramètres</span></div>
+<span>Paramètres</span></a>
       <div class="profile-chip">
         <div class="av">CD</div>
         <div><div class="who">Cheikh Dièye</div><div class="role">ONAS · Assainissement</div></div>
@@ -370,7 +460,7 @@ table.proof tr:last-child td{border-bottom:none;}
 
   <main class="main">
     <div class="topbar">
-      <div><h1>Dashboard institutionnel</h1><div class="sub">Bonjour, bienvenue sur votre espace — Région de Dakar</div></div>
+      <div><h1 id="pageTitle">Dashboard institutionnel</h1><div class="sub" id="pageSub">Bonjour, bienvenue sur votre espace — Région de Dakar</div></div>
       <div class="topactions">
         <div class="iconbtn"><svg class="ic " style="width:16px;height:16px;color:currentColor;flex:none" stroke-width="1.8"
   class="lucide lucide-search"
@@ -422,8 +512,9 @@ table.proof tr:last-child td{border-bottom:none;}
       </div>
     </div>
 
+    <section class="view" id="view-dashboard">
     <div class="kpirow">
-      
+
     <div class="kpi">
       <div class="isq" style="background:var(--teal-light)"><svg class="ic " style="width:15px;height:15px;color:var(--teal);flex:none" stroke-width="1.8"
   class="lucide lucide-truck"
@@ -869,26 +960,746 @@ Vérifiée</span></td></tr>
 À vérifier</span></td></tr>
       </table>
     </div>
+    </section>
+
+    <section class="view" id="view-vidanges" hidden></section>
+    <section class="view" id="view-gps" hidden></section>
+    <section class="view" id="view-operateurs" hidden></section>
+    <section class="view" id="view-menages" hidden></section>
+    <section class="view" id="view-paiements" hidden></section>
+    <section class="view" id="view-preuves" hidden></section>
+    <section class="view" id="view-carte" hidden></section>
+    <section class="view" id="view-rapports" hidden></section>
+    <section class="view" id="view-parametres" hidden></section>
   </main>
 </div>
 </div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-new Chart(document.getElementById('chartEvo'), {
-  type:'bar',
-  data:{labels:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],
-    datasets:[{data:[82,96,104,128,118,95,60], backgroundColor:'#0E7C7B', borderRadius:5, maxBarThickness:26}]},
-  options:{responsive:true,maintainAspectRatio:false,
-    plugins:{legend:{display:false}},
-    scales:{y:{beginAtZero:true,ticks:{color:'#5B6B72',font:{size:10.5}},grid:{color:'#EDEBE1'}},
-             x:{ticks:{color:'#5B6B72',font:{size:10.5}},grid:{display:false}}}}
+/* ============================================================================
+   AssainiTrack — dashboard institutionnel (maquette)
+   Navigation par hash, vues rendues côté client. Toutes les pages lisent le
+   même objet DATA : les chiffres de référence (128 vidanges = 17 en cours +
+   104 terminées + 7 à vérifier, 1 850 000 FCFA, 36 opérateurs, répartition
+   32/26/21/21 %) ne sont écrits qu'une fois et tout le reste en découle.
+   ========================================================================= */
+
+/* ---------- utilitaires ---------- */
+const sep   = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const fcfa  = n => sep(n) + ' FCFA';
+const init2 = nom => nom.split(' ').map(m => m[0]).join('').slice(0, 2).toUpperCase();
+
+const TONES = {
+  success: ['var(--success)', 'var(--success-light)'],
+  teal:    ['var(--teal)',    'var(--teal-light)'],
+  amber:   ['var(--amber)',   'var(--amber-light)'],
+  danger:  ['var(--danger)',  'var(--danger-light)'],
+  grey:    ['var(--grey)',    '#EFEDE6']
+};
+const pill = (txt, tone) =>
+  `<span class="statuspill" style="color:${TONES[tone][0]};background:${TONES[tone][1]}">${txt}</span>`;
+
+const PATH = {
+  check:    '<path d="M20 6 9 17l-5-5"/>',
+  alert:    '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
+  search:   '<path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/>',
+  download: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>',
+  truck:    '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>',
+  clock:    '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  plus:     '<path d="M5 12h14"/><path d="M12 5v14"/>',
+  filter:   '<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>',
+  nav:      '<polygon points="3 11 22 2 13 21 11 13 3 11"/>',
+  info:     '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>'
+};
+const ico = (k, size = 14, color = 'currentColor') =>
+  `<svg viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round" style="width:${size}px;height:${size}px;flex:none">${PATH[k]}</svg>`;
+
+const warn = txt => `<div class="mockwarn">${ico('info', 14, '#B4762E')}<div>${txt}</div></div>`;
+
+/* ---------- jeu de données ---------- */
+const DATA = {
+  kpi: { jour: 128, encours: 17, terminees: 104, averifier: 7, operateurs: 36, revenus: 1850000 },
+
+  semaine: { labels: ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'], valeurs: [82,96,104,128,118,95,60] },
+
+  zones: [
+    { nom: 'Parcelles Assainies', pct: 32, couleur: '#0E7C7B' },
+    { nom: 'Pikine',              pct: 26, couleur: '#E1863B' },
+    { nom: 'Keur Massar',         pct: 21, couleur: '#16324A' },
+    { nom: 'Autres',              pct: 21, couleur: '#C7C4B8' }
+  ],
+
+  stations: [
+    { nom: 'Cambérène',       cap: 74, top: '34%', left: '20%' },
+    { nom: 'Pikine',          cap: 88, top: '66%', left: '62%' },
+    { nom: 'Rufisque',        cap: 65, top: '82%', left: '22%' },
+    { nom: 'Tivaouane Peulh', cap: 58, top: '48%', left: '82%' },
+    { nom: 'Niayes',          cap: 96, top: '20%', left: '48%', alerte: true }
+  ],
+
+  /* 14 vidanges affichées sur les 128 du jour ; les heures et statuts des
+     camions AT-024 / AT-018 / AT-041 / AT-032 correspondent aux preuves de dépotage */
+  vidanges: [
+    { ref:'VD-0128', menage:'Fatou Sow',        zone:'Parcelles Assainies', op:'Ibrahima Ndiaye',  camion:'AT-024', h:'11:05', montant:20000, statut:'En cours'   },
+    { ref:'VD-0127', menage:'Moussa Diagne',    zone:'Pikine',              op:'Awa Diallo',       camion:'AT-032', h:'10:58', montant:15000, statut:'En cours'   },
+    { ref:'VD-0126', menage:'Ndèye Gueye',      zone:'Keur Massar',         op:'Cheikh Ba',        camion:'AT-041', h:'10:47', montant:18000, statut:'En cours'   },
+    { ref:'VD-0125', menage:'Alioune Cissé',    zone:'Parcelles Assainies', op:'Ibrahima Ndiaye',  camion:'AT-024', h:'10:42', montant:20000, statut:'Terminée'   },
+    { ref:'VD-0124', menage:'Seynabou Faye',    zone:'Pikine',              op:'Moussa Diop',      camion:'AT-018', h:'10:31', montant:12000, statut:'Terminée'   },
+    { ref:'VD-0123', menage:'Ousmane Sarr',     zone:'Autres',              op:'Mariama Bâ',       camion:'AT-007', h:'10:19', montant:25000, statut:'Terminée'   },
+    { ref:'VD-0122', menage:'Aminata Fall',     zone:'Keur Massar',         op:'Cheikh Ba',        camion:'AT-041', h:'09:58', montant:18000, statut:'À vérifier' },
+    { ref:'VD-0121', menage:'Mamadou Ndiaye',   zone:'Pikine',              op:'Awa Diallo',       camion:'AT-032', h:'09:15', montant:15000, statut:'À vérifier' },
+    { ref:'VD-0120', menage:'Khadija Diouf',    zone:'Parcelles Assainies', op:'Abdoulaye Ndour',  camion:'AT-015', h:'09:04', montant:20000, statut:'Terminée'   },
+    { ref:'VD-0119', menage:'Serigne Mbacké',   zone:'Keur Massar',         op:'Khady Mbaye',      camion:'AT-029', h:'08:52', montant:18000, statut:'Terminée'   },
+    { ref:'VD-0118', menage:'Bineta Thiam',     zone:'Pikine',              op:'Pape Samb',        camion:'AT-036', h:'08:37', montant:12000, statut:'Terminée'   },
+    { ref:'VD-0117', menage:'Ibrahima Kane',    zone:'Parcelles Assainies', op:'Ibrahima Ndiaye',  camion:'AT-024', h:'08:20', montant:20000, statut:'Terminée'   },
+    { ref:'VD-0116', menage:'Rokhaya Séne',     zone:'Autres',              op:'Mariama Bâ',       camion:'AT-007', h:'08:05', montant:25000, statut:'Terminée'   },
+    { ref:'VD-0115', menage:'Modou Diagne',     zone:'Pikine',              op:'Moussa Diop',      camion:'AT-018', h:'07:48', montant:12000, statut:'Terminée'   }
+  ],
+
+  /* 8 opérateurs affichés sur 36 actifs — 17 en intervention, 18 disponibles, 1 anomalie */
+  operateurs: [
+    { nom:'Ibrahima Ndiaye', camion:'AT-024', zone:'Parcelles Assainies', vidanges:6, note:'4,9', statut:'En intervention' },
+    { nom:'Awa Diallo',      camion:'AT-032', zone:'Pikine',              vidanges:5, note:'4,7', statut:'En intervention' },
+    { nom:'Cheikh Ba',       camion:'AT-041', zone:'Keur Massar',         vidanges:5, note:'4,6', statut:'En intervention' },
+    { nom:'Moussa Diop',     camion:'AT-018', zone:'Pikine',              vidanges:4, note:'4,2', statut:'Anomalie'        },
+    { nom:'Mariama Bâ',      camion:'AT-007', zone:'Autres',              vidanges:4, note:'4,8', statut:'Disponible'      },
+    { nom:'Abdoulaye Ndour', camion:'AT-015', zone:'Parcelles Assainies', vidanges:3, note:'4,5', statut:'Disponible'      },
+    { nom:'Khady Mbaye',     camion:'AT-029', zone:'Keur Massar',         vidanges:3, note:'4,4', statut:'Disponible'      },
+    { nom:'Pape Samb',       camion:'AT-036', zone:'Pikine',              vidanges:2, note:'4,1', statut:'Disponible'      }
+  ],
+
+  menages: [
+    { nom:'Fatou Sow',      zone:'Parcelles Assainies', tel:'77 ••• 42 18', derniere:"Aujourd'hui",   freq:'6 mois', statut:'À jour'      },
+    { nom:'Alioune Cissé',  zone:'Parcelles Assainies', tel:'76 ••• 07 33', derniere:"Aujourd'hui",   freq:'6 mois', statut:'À jour'      },
+    { nom:'Seynabou Faye',  zone:'Pikine',              tel:'70 ••• 91 05', derniere:"Aujourd'hui",   freq:'4 mois', statut:'À jour'      },
+    { nom:'Ndèye Gueye',    zone:'Keur Massar',         tel:'78 ••• 60 47', derniere:'12 févr. 2026', freq:'6 mois', statut:'Vidange due' },
+    { nom:'Mamadou Ndiaye', zone:'Pikine',              tel:'77 ••• 28 14', derniere:'03 févr. 2026', freq:'4 mois', statut:'Vidange due' },
+    { nom:'Aminata Fall',   zone:'Keur Massar',         tel:'76 ••• 55 82', derniere:'21 nov. 2025',  freq:'6 mois', statut:'En retard'   },
+    { nom:'Ousmane Sarr',   zone:'Autres',              tel:'70 ••• 13 76', derniere:'09 oct. 2025',  freq:'6 mois', statut:'En retard'   },
+    { nom:'Bineta Thiam',   zone:'Pikine',              tel:'78 ••• 34 90', derniere:"Aujourd'hui",   freq:'4 mois', statut:'À jour'      }
+  ],
+  menagesTotal: 12480,
+
+  /* les trois méthodes totalisent exactement les 1 850 000 FCFA du jour */
+  methodes: [
+    { nom:'Wave',         montant: 812000, couleur:'#0E7C7B' },
+    { nom:'Orange Money', montant: 645000, couleur:'#E1863B' },
+    { nom:'Espèces',      montant: 393000, couleur:'#16324A' }
+  ],
+
+  paiements: [
+    { ref:'PM-4412', vidange:'VD-0125', menage:'Alioune Cissé',  methode:'Wave',         montant:20000, h:'10:44', statut:'Confirmé'   },
+    { ref:'PM-4411', vidange:'VD-0124', menage:'Seynabou Faye',  methode:'Orange Money', montant:12000, h:'10:33', statut:'Confirmé'   },
+    { ref:'PM-4410', vidange:'VD-0123', menage:'Ousmane Sarr',   methode:'Espèces',      montant:25000, h:'10:21', statut:'Confirmé'   },
+    { ref:'PM-4409', vidange:'VD-0122', menage:'Aminata Fall',   methode:'Wave',         montant:18000, h:'10:02', statut:'En attente' },
+    { ref:'PM-4408', vidange:'VD-0121', menage:'Mamadou Ndiaye', methode:'Orange Money', montant:15000, h:'09:18', statut:'En attente' },
+    { ref:'PM-4407', vidange:'VD-0120', menage:'Khadija Diouf',  methode:'Wave',         montant:20000, h:'09:07', statut:'Confirmé'   },
+    { ref:'PM-4406', vidange:'VD-0119', menage:'Serigne Mbacké', methode:'Espèces',      montant:18000, h:'08:55', statut:'Confirmé'   },
+    { ref:'PM-4405', vidange:'VD-0118', menage:'Bineta Thiam',   methode:'Orange Money', montant:12000, h:'08:40', statut:'Échoué'    }
+  ],
+
+  /* les 4 preuves figées du cahier des charges */
+  preuves: [
+    { camion:'AT-024', station:'Tivaouane Peulh', h:'10:42', statut:'Vérifiée'   },
+    { camion:'AT-018', station:'Cambérène',       h:'10:31', statut:'Vérifiée'   },
+    { camion:'AT-041', station:'Niayes',          h:'09:58', statut:'À vérifier' },
+    { camion:'AT-032', station:'Pikine',          h:'09:15', statut:'À vérifier' }
+  ],
+
+  /* camions suivis en direct — AT-024 est celui détaillé dans le cahier des charges */
+  camions: [
+    { id:'AT-024', op:'Ibrahima Ndiaye', zone:'Parcelles Assainies', dest:'Tivaouane Peulh', eta:'12 min', etat:'En route',       tone:'teal',    top:'30%', left:'35%' },
+    { id:'AT-032', op:'Awa Diallo',      zone:'Pikine',              dest:'Pikine',          eta:'21 min', etat:'En route',       tone:'teal',    top:'58%', left:'28%' },
+    { id:'AT-041', op:'Cheikh Ba',       zone:'Keur Massar',         dest:'Niayes',          eta:'8 min',  etat:'En route',       tone:'teal',    top:'44%', left:'55%' },
+    { id:'AT-007', op:'Mariama Bâ',      zone:'Autres',              dest:'Rufisque',        eta:'34 min', etat:'En vidange',     tone:'success', top:'72%', left:'44%' },
+    { id:'AT-015', op:'Abdoulaye Ndour', zone:'Parcelles Assainies', dest:'Cambérène',       eta:'17 min', etat:'En vidange',     tone:'success', top:'24%', left:'66%' },
+    { id:'AT-018', op:'Moussa Diop',     zone:'Pikine',              dest:'Cambérène',       eta:'—',      etat:'Anomalie',       tone:'danger',  top:'62%', left:'74%' }
+  ]
+};
+
+/* totaux dérivés — jamais saisis à la main */
+const parZone = DATA.zones.map(z => ({
+  ...z,
+  vidanges: Math.round(DATA.kpi.jour * z.pct / 100),
+  revenus:  Math.round(DATA.kpi.revenus * z.pct / 100)
+}));
+const depotages = DATA.kpi.terminees + DATA.kpi.averifier;
+const conformite = (DATA.kpi.terminees / depotages * 100).toFixed(1).replace('.', ',');
+
+/* ---------- fabriques de composants ---------- */
+const kpiCard = (label, val, note, tone) => `
+  <div class="kpi">
+    <div class="isq" style="background:${TONES[tone][1]}">${ico('truck', 15, TONES[tone][0])}</div>
+    <div class="label">${label}</div>
+    <div class="val">${val}</div>
+    <div class="delta" style="color:${TONES[tone][0]}">${note}</div>
+  </div>`;
+
+const statCard = (label, val, note, couleur) => `
+  <div class="kpi">
+    <div class="label">${label}</div>
+    <div class="val" style="color:${couleur || 'var(--navy2)'}">${val}</div>
+    <div class="delta" style="color:var(--grey)">${note}</div>
+  </div>`;
+
+const toolbar = (tabs, placeholder, actions) => `
+  <div class="toolbar">
+    <div class="tabs">${tabs}</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <div class="searchfield">${ico('search', 14, '#9AA6AB')}<input type="search" placeholder="${placeholder}"></div>
+      ${actions || ''}
+    </div>
+  </div>`;
+
+const tabBtn = (label, n, on) =>
+  `<button class="tab${on ? ' active' : ''}" data-tab="${label}">${label}` +
+  (n === '' || n == null ? '' : `<span class="n">${n}</span>`) + `</button>`;
+
+const tfoot = (montre, total, mot) => `
+  <div class="tfoot">
+    <span>Affichage de ${montre} ${mot} sur ${sep(total)}</span>
+    <div class="pager"><span>‹</span><span class="on">1</span><span>2</span><span>3</span><span>›</span></div>
+  </div>`;
+
+const mapMarkers = (camions) => [
+  ...DATA.stations.map(s => `
+    <div class="station" style="top:${s.top};left:${s.left}">
+      <div class="pin"></div><div class="lbl">${s.nom} · ${s.cap} %</div>
+    </div>`),
+  ...camions.map(c => `
+    <div class="truckdot" style="top:${c.top};left:${c.left};background:${TONES[c.tone][0]}">
+      ${ico('truck', 12, '#fff')}
+    </div>`)
+].join('');
+
+const mapLegend = `
+  <div class="maplegend">
+    <span><i style="background:var(--teal)"></i>En route vers une station</span>
+    <span><i style="background:var(--success)"></i>Vidange en cours</span>
+    <span><i style="background:var(--danger)"></i>Anomalie signalée</span>
+    <span><i style="background:var(--navy2);border-radius:50% 50% 50% 0"></i>Station de dépotage</span>
+  </div>`;
+
+/* ---------- constructeurs de pages ---------- */
+const PAGES = {};
+
+PAGES.vidanges = () => {
+  const v = DATA.vidanges, k = DATA.kpi;
+  const compte = { 'Toutes': k.jour, 'En cours': k.encours, 'Terminées': k.terminees, 'À vérifier': k.averifier };
+  const tone = { 'En cours': 'teal', 'Terminée': 'success', 'À vérifier': 'amber' };
+
+  const lignes = f => (f === 'Toutes' ? v : v.filter(x => x.statut === (f === 'Terminées' ? 'Terminée' : f)))
+    .map(x => `
+      <tr>
+        <td class="ref">${x.ref}</td>
+        <td><div class="who2"><div class="uav">${init2(x.menage)}</div><div>${x.menage}<div class="sub2">${x.zone}</div></div></div></td>
+        <td>${x.op}<div class="sub2">${x.camion}</div></td>
+        <td class="num">${x.h}</td>
+        <td class="num">${fcfa(x.montant)}</td>
+        <td>${pill(x.statut, tone[x.statut])}</td>
+      </tr>`).join('');
+
+  return `
+    ${warn("Maquette de présentation : les filtres et la recherche illustrent le parcours, les données ne sont pas connectées à une base.")}
+    <div class="grid4">
+      ${statCard("Vidanges du jour", k.jour, '+12,4 % vs. sem. dernière')}
+      ${statCard("En cours", k.encours, 'Camions sur le terrain', 'var(--teal)')}
+      ${statCard("Terminées", k.terminees, '81 % du volume du jour', 'var(--success)')}
+      ${statCard("À vérifier", k.averifier, '2 déviations, 5 signalements', 'var(--amber)')}
+    </div>
+    ${toolbar(
+      Object.entries(compte).map(([l, n], i) => tabBtn(l, sep(n), i === 0)).join(''),
+      'Rechercher une référence, un ménage…',
+      `<button class="btn primary">${ico('plus')} Planifier</button>`
+    )}
+    <div class="card">
+      <table class="dt">
+        <thead><tr><th>Référence</th><th>Ménage</th><th>Opérateur</th><th>Heure</th><th>Montant</th><th>Statut</th></tr></thead>
+        <tbody id="tbVidanges">${lignes('Toutes')}</tbody>
+      </table>
+      <div id="ftVidanges">${tfoot(v.length, k.jour, 'vidanges')}</div>
+    </div>`;
+};
+
+PAGES.gps = () => {
+  const c = DATA.camions;
+  return `
+    ${warn("Positions simulées : la maquette illustre le suivi temps réel, sans flux GPS réel.")}
+    <div class="midrow">
+      <div class="card mapcard">
+        <div class="cardhead">
+          <div><h2>Position des camions</h2><div class="hint">Région de Dakar — actualisé il y a 30 s</div></div>
+          <span class="pill" style="background:var(--teal-light);color:var(--teal)">${DATA.kpi.encours} camions en intervention</span>
+        </div>
+        <div class="bigmap">
+          ${mapMarkers(c)}
+          <div class="popup" style="top:4%;right:4%">
+            <div class="t">Camion #AT-024</div>
+            <div class="row"><span>Opérateur</span><b>Ibrahima Ndiaye</b></div>
+            <div class="row"><span>Zone</span><b>Parcelles Assainies</b></div>
+            <div class="row"><span>Destination</span><b>Station Tivaouane P.</b></div>
+            <div class="row"><span>ETA</span><b>12 min</b></div>
+            <div class="statusrow">${ico('nav', 10, 'var(--teal)')} En route</div>
+          </div>
+        </div>
+        ${mapLegend}
+      </div>
+      <div class="card">
+        <div class="cardhead"><div><h2>Flotte suivie</h2><div class="hint">${c.length} véhicules géolocalisés</div></div></div>
+        <div class="tracklist">
+          ${c.map((x, i) => `
+            <div class="trackrow${i === 0 ? ' on' : ''}">
+              <div class="r1"><span class="id">#${x.id}</span>${pill(x.etat, x.tone)}</div>
+              <div class="r2">${x.op} — ${x.zone}</div>
+              <div class="r2">Destination <b style="color:var(--ink)">${x.dest}</b> · ETA ${x.eta}</div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+};
+
+PAGES.operateurs = () => {
+  const o = DATA.operateurs, k = DATA.kpi;
+  const tone = { 'En intervention': 'teal', 'Disponible': 'success', 'Anomalie': 'danger' };
+  return `
+    <div class="grid4">
+      ${statCard('Opérateurs actifs', k.operateurs, '+3 cette semaine')}
+      ${statCard('En intervention', k.encours, 'Sur le terrain', 'var(--teal)')}
+      ${statCard('Disponibles', k.operateurs - k.encours - 1, 'Prêts à être assignés', 'var(--success)')}
+      ${statCard('Signalements', 1, 'Camion AT-018', 'var(--danger)')}
+    </div>
+    ${toolbar(
+      [['Tous', k.operateurs], ['En intervention', k.encours], ['Disponible', k.operateurs - k.encours - 1], ['Anomalie', 1]]
+        .map(([l, n], i) => tabBtn(l, n, i === 0)).join(''),
+      'Rechercher un opérateur, un camion…',
+      `<button class="btn">${ico('download')} Exporter</button>`
+    )}
+    <div class="card">
+      <table class="dt">
+        <thead><tr><th>Opérateur</th><th>Camion</th><th>Zone d'affectation</th><th>Vidanges du jour</th><th>Note</th><th>Statut</th></tr></thead>
+        <tbody>
+          ${o.map(x => `
+            <tr>
+              <td><div class="who2"><div class="uav navy">${init2(x.nom)}</div><div>${x.nom}</div></div></td>
+              <td class="ref">${x.camion}</td>
+              <td>${x.zone}</td>
+              <td class="num">${x.vidanges}</td>
+              <td class="num">${x.note} / 5</td>
+              <td>${pill(x.statut, tone[x.statut])}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      ${tfoot(o.length, k.operateurs, 'opérateurs')}
+    </div>`;
+};
+
+PAGES.menages = () => {
+  const m = DATA.menages, tone = { 'À jour': 'success', 'Vidange due': 'amber', 'En retard': 'danger' };
+  return `
+    ${warn("Les numéros de téléphone sont volontairement masqués : cette maquette ne contient aucune donnée personnelle réelle.")}
+    <div class="grid4">
+      ${statCard('Ménages enregistrés', sep(DATA.menagesTotal), 'Région de Dakar')}
+      ${statCard("Vidangés aujourd'hui", DATA.kpi.jour, 'Soit 1 % du parc', 'var(--teal)')}
+      ${statCard('Vidange due', '312', 'Échéance dépassée < 30 j', 'var(--amber)')}
+      ${statCard('En retard', '87', 'Échéance dépassée > 30 j', 'var(--danger)')}
+    </div>
+    ${toolbar(
+      ['Tous', 'À jour', 'Vidange due', 'En retard'].map((l, i) => tabBtn(l, l === 'Tous' ? sep(DATA.menagesTotal) : ['—', '12 081', '312', '87'][i], i === 0)).join(''),
+      'Rechercher un ménage, un quartier…',
+      `<button class="btn primary">${ico('plus')} Enregistrer</button>`
+    )}
+    <div class="card">
+      <table class="dt">
+        <thead><tr><th>Ménage</th><th>Zone</th><th>Téléphone</th><th>Dernière vidange</th><th>Fréquence</th><th>Statut</th></tr></thead>
+        <tbody>
+          ${m.map(x => `
+            <tr>
+              <td><div class="who2"><div class="uav">${init2(x.nom)}</div><div>${x.nom}</div></div></td>
+              <td>${x.zone}</td>
+              <td class="num">+221 ${x.tel}</td>
+              <td>${x.derniere}</td>
+              <td>${x.freq}</td>
+              <td>${pill(x.statut, tone[x.statut])}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      ${tfoot(m.length, DATA.menagesTotal, 'ménages')}
+    </div>`;
+};
+
+PAGES.paiements = () => {
+  const p = DATA.paiements, tone = { 'Confirmé': 'success', 'En attente': 'amber', 'Échoué': 'danger' };
+  return `
+    <div class="grid4">
+      ${statCard('Revenus du jour', '1,85 M FCFA', '+8,1 % vs. sem. dernière', 'var(--navy2)')}
+      ${DATA.methodes.map(m => statCard(m.nom, fcfa(m.montant),
+        Math.round(m.montant / DATA.kpi.revenus * 100) + ' % des encaissements', m.couleur)).join('')}
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="cardhead"><div><h2>Répartition par moyen de paiement</h2><div class="hint">Journée en cours</div></div></div>
+        <div style="position:relative;height:200px"><canvas id="chartPay"></canvas></div>
+        <div class="legend">
+          ${DATA.methodes.map(m => `<span><i style="background:${m.couleur}"></i>${m.nom} — ${fcfa(m.montant)}</span>`).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="cardhead"><div><h2>Encaissements par zone</h2><div class="hint">Proportionnels au volume de vidanges</div></div></div>
+        <table class="dt" style="margin-top:4px">
+          <thead><tr><th>Zone</th><th>Part</th><th>Vidanges</th><th>Revenus</th></tr></thead>
+          <tbody>
+            ${parZone.map(z => `
+              <tr>
+                <td>${z.nom}</td>
+                <td style="width:120px"><div class="pbar"><i style="width:${z.pct}%;background:${z.couleur}"></i></div></td>
+                <td class="num">${z.vidanges}</td>
+                <td class="num">${fcfa(z.revenus)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    ${toolbar(
+      ['Tous', 'Confirmé', 'En attente', 'Échoué'].map((l, i) => tabBtn(l, l === 'Tous' ? p.length : p.filter(x => x.statut === l).length, i === 0)).join(''),
+      'Rechercher une transaction…',
+      `<button class="btn">${ico('download')} Exporter</button>`
+    )}
+    <div class="card">
+      <table class="dt">
+        <thead><tr><th>Transaction</th><th>Vidange</th><th>Ménage</th><th>Moyen</th><th>Heure</th><th>Montant</th><th>Statut</th></tr></thead>
+        <tbody>
+          ${p.map(x => `
+            <tr>
+              <td class="ref">${x.ref}</td>
+              <td>${x.vidange}</td>
+              <td>${x.menage}</td>
+              <td>${x.methode}</td>
+              <td class="num">${x.h}</td>
+              <td class="num">${fcfa(x.montant)}</td>
+              <td>${pill(x.statut, tone[x.statut])}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+      ${tfoot(p.length, 128, 'transactions')}
+    </div>`;
+};
+
+PAGES.preuves = () => `
+  <div class="grid4">
+    ${statCard('Dépotages enregistrés', depotages, 'Vidanges arrivées en station')}
+    ${statCard('Vérifiés', DATA.kpi.terminees, 'Scan QR validé', 'var(--success)')}
+    ${statCard('À vérifier', DATA.kpi.averifier, 'En attente de contrôle', 'var(--amber)')}
+    ${statCard('Taux de conformité', conformite + ' %', 'Sur la journée', 'var(--teal)')}
+  </div>
+  <div class="card mb16">
+    <div class="cardhead">
+      <div><h2>Capacité résiduelle des stations</h2><div class="hint">Réception des dépotages</div></div>
+      <span class="pill" style="background:var(--danger-light);color:var(--danger)">1 station en alerte</span>
+    </div>
+    <div class="stationsrow">
+      ${DATA.stations.map(s => {
+        const c = s.alerte ? 'var(--danger)' : (s.cap > 75 ? 'var(--amber)' : 'var(--teal)');
+        return `<div class="stationcap${s.alerte ? ' alert' : ''}">
+          <div class="nm">${s.nom}${s.alerte ? '<span class="tag">Alerte</span>' : ''}</div>
+          <div class="pc" style="color:${c}">${s.cap} %</div>
+          <div class="bar"><i style="width:${s.cap}%;background:${c}"></i></div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+  ${toolbar(
+    ['Toutes', 'Vérifiée', 'À vérifier'].map((l, i) => tabBtn(l, l === 'Toutes' ? depotages : (l === 'Vérifiée' ? DATA.kpi.terminees : DATA.kpi.averifier), i === 0)).join(''),
+    'Rechercher un camion, une station…',
+    `<button class="btn">${ico('download')} Exporter le registre</button>`
+  )}
+  <div class="card">
+    <div class="cardhead"><div><h2>Preuves de dépotage</h2><div class="hint">Dernières validations par scan QR à la station</div></div></div>
+    <table class="dt">
+      <thead><tr><th>Vidange</th><th>Station de dépotage</th><th>Heure</th><th>Statut</th></tr></thead>
+      <tbody>
+        ${DATA.preuves.map(x => `
+          <tr>
+            <td class="ref">${x.camion}</td>
+            <td>${x.station}</td>
+            <td class="num">${x.h}</td>
+            <td>${x.statut === 'Vérifiée'
+              ? `<span class="statuspill" style="color:var(--success);background:var(--success-light)">${ico('check', 12, 'var(--success)')}Vérifiée</span>`
+              : `<span class="statuspill" style="color:var(--amber);background:var(--amber-light)">${ico('alert', 12, 'var(--amber)')}À vérifier</span>`}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+    ${tfoot(DATA.preuves.length, depotages, 'dépotages')}
+  </div>`;
+
+PAGES.carte = () => `
+  ${warn("Fond de carte schématique : l'intégration cartographique réelle interviendra à la phase de développement.")}
+  <div class="card mb16">
+    <div class="cardhead">
+      <div><h2>Cartographie des opérations</h2><div class="hint">Stations de dépotage et flotte — région de Dakar</div></div>
+      <div style="display:flex;gap:8px">
+        <span class="pill" style="background:var(--teal-light);color:var(--teal)">${DATA.kpi.encours} camions</span>
+        <span class="pill" style="background:#E3E8ED;color:var(--navy2)">${DATA.stations.length} stations</span>
+      </div>
+    </div>
+    <div class="bigmap" style="height:520px">${mapMarkers(DATA.camions)}</div>
+    ${mapLegend}
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="cardhead"><div><h2>Stations de dépotage</h2><div class="hint">Capacité résiduelle</div></div></div>
+      <table class="dt" style="margin-top:4px">
+        <thead><tr><th>Station</th><th>Capacité</th><th>État</th></tr></thead>
+        <tbody>
+          ${DATA.stations.map(s => {
+            const c = s.alerte ? 'var(--danger)' : (s.cap > 75 ? 'var(--amber)' : 'var(--teal)');
+            return `<tr>
+              <td class="ref">${s.nom}</td>
+              <td style="width:150px"><div style="display:flex;align-items:center;gap:9px">
+                <div class="pbar"><i style="width:${s.cap}%;background:${c}"></i></div>
+                <b style="font-size:11.5px;color:${c}">${s.cap} %</b></div></td>
+              <td>${s.alerte ? pill('Alerte', 'danger') : (s.cap > 75 ? pill('Surveillance', 'amber') : pill('Normal', 'success'))}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div><h2>Densité par zone</h2><div class="hint">Part des ${DATA.kpi.jour} vidanges du jour</div></div></div>
+      <table class="dt" style="margin-top:4px">
+        <thead><tr><th>Zone</th><th>Part</th><th>Vidanges</th></tr></thead>
+        <tbody>
+          ${parZone.map(z => `
+            <tr>
+              <td class="ref">${z.nom}</td>
+              <td style="width:150px"><div style="display:flex;align-items:center;gap:9px">
+                <div class="pbar"><i style="width:${z.pct * 2.5}%;background:${z.couleur}"></i></div>
+                <b style="font-size:11.5px;color:var(--navy2)">${z.pct} %</b></div></td>
+              <td class="num">${z.vidanges}</td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+
+PAGES.rapports = () => `
+  <div class="toolbar">
+    <div class="tabs">${['7 jours', '30 jours', 'Trimestre', 'Année'].map((l, i) => tabBtn(l, '', i === 0)).join('')}</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn">${ico('download')} Export CSV</button>
+      <button class="btn primary">${ico('download')} Rapport PDF</button>
+    </div>
+  </div>
+  <div class="grid4">
+    ${statCard('Vidanges tracées', DATA.semaine.valeurs.reduce((a, b) => a + b, 0), 'Cumul 7 derniers jours')}
+    ${statCard('Moyenne quotidienne', Math.round(DATA.semaine.valeurs.reduce((a, b) => a + b, 0) / 7), 'Sur la période', 'var(--teal)')}
+    ${statCard("Pic d'activité", Math.max(...DATA.semaine.valeurs) + ' — jeudi', 'Jour le plus chargé', 'var(--amber)')}
+    ${statCard('Taux de conformité', conformite + ' %', 'Dépotages vérifiés', 'var(--success)')}
+  </div>
+  <div class="chartrow">
+    <div class="card">
+      <div class="cardhead"><div><h2>Évolution des vidanges</h2><div class="hint">7 derniers jours</div></div></div>
+      <div style="position:relative;height:260px"><canvas id="chartEvoBig"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div><h2>Répartition par zone</h2><div class="hint">Part du volume</div></div></div>
+      <div style="position:relative;height:200px"><canvas id="chartZonesBig"></canvas></div>
+      <div class="legend">
+        ${DATA.zones.map(z => `<span><i style="background:${z.couleur}"></i>${z.nom} ${z.pct} %</span>`).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <div class="cardhead"><div><h2>Charge des stations</h2><div class="hint">Capacité résiduelle par site</div></div></div>
+      <div style="position:relative;height:220px"><canvas id="chartStations"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="cardhead"><div><h2>Synthèse par zone</h2><div class="hint">Volume et revenus du jour</div></div></div>
+      <table class="dt" style="margin-top:4px">
+        <thead><tr><th>Zone</th><th>Vidanges</th><th>Part</th><th>Revenus</th></tr></thead>
+        <tbody>
+          ${parZone.map(z => `
+            <tr><td class="ref">${z.nom}</td><td class="num">${z.vidanges}</td><td class="num">${z.pct} %</td><td class="num">${fcfa(z.revenus)}</td></tr>`).join('')}
+          <tr style="background:#FBFAF7">
+            <td><b>Total</b></td>
+            <td class="num"><b>${DATA.kpi.jour}</b></td>
+            <td class="num"><b>100 %</b></td>
+            <td class="num"><b>${fcfa(DATA.kpi.revenus)}</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+
+PAGES.parametres = () => `
+  ${warn("Maquette : les champs sont présentés à titre d'illustration et ne sont pas enregistrés.")}
+  <div class="grid2">
+    <div class="card">
+      <div class="cardhead"><div><h2>Profil institutionnel</h2><div class="hint">Compte rattaché à l'ONAS</div></div></div>
+      <div class="field"><label>Nom complet</label><input value="Cheikh Dièye"></div>
+      <div class="field"><label>Institution</label>
+        <select><option>ONAS — Office National de l'Assainissement du Sénégal</option><option>Commune de Pikine</option><option>Commune de Keur Massar</option></select>
+      </div>
+      <div class="field"><label>Périmètre de supervision</label>
+        <select><option>Région de Dakar</option><option>Parcelles Assainies</option><option>Pikine</option><option>Keur Massar</option></select>
+        <div class="help">Détermine les vidanges, opérateurs et stations visibles dans le tableau de bord.</div>
+      </div>
+      <div class="field"><label>Langue de l'interface</label><select><option>Français</option><option>Wolof</option><option>English</option></select></div>
+      <button class="btn primary">Enregistrer les modifications</button>
+    </div>
+    <div>
+      <div class="card mb16">
+        <div class="cardhead"><div><h2>Seuils d'alerte</h2><div class="hint">Déclenchement des notifications</div></div></div>
+        <div class="field"><label>Capacité de station — alerte critique</label><input value="90 %">
+          <div class="help">Niayes est actuellement à 96 %, au-dessus du seuil.</div>
+        </div>
+        <div class="field"><label>Délai maximum de vérification d'un dépotage</label><input value="4 heures"></div>
+        <div class="field"><label>Écart de trajet toléré</label><input value="1,5 km">
+          <div class="help">Au-delà, la vidange bascule automatiquement en « à vérifier ».</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="cardhead"><div><h2>Notifications</h2><div class="hint">Canaux d'alerte</div></div></div>
+        ${[
+          ['Anomalie détectée sur un camion', 'Alerte immédiate par e-mail et SMS', true],
+          ['Station au-dessus du seuil critique', 'Résumé toutes les heures', true],
+          ['Dépotage non vérifié après 4 h', 'Alerte quotidienne', true],
+          ['Rapport hebdomadaire consolidé', 'Envoyé chaque lundi à 8 h', false]
+        ].map(([t, s, on]) => `
+          <div class="togglerow">
+            <div><div class="t">${t}</div><div class="s">${s}</div></div>
+            <div class="sw${on ? ' on' : ''}"></div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+/* ---------- graphiques (créés à la première ouverture de la page) ---------- */
+const grille = { color: '#EDEBE1' };
+const tickStyle = { color: '#5B6B72', font: { size: 10.5 } };
+const CHARTS = {
+  dashboard() {
+    new Chart(document.getElementById('chartEvo'), {
+      type: 'bar',
+      data: { labels: DATA.semaine.labels, datasets: [{ data: DATA.semaine.valeurs, backgroundColor: '#0E7C7B', borderRadius: 5, maxBarThickness: 26 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: tickStyle, grid: grille }, x: { ticks: tickStyle, grid: { display: false } } } }
+    });
+    new Chart(document.getElementById('chartRepart'), {
+      type: 'doughnut',
+      data: { labels: DATA.zones.map(z => z.nom), datasets: [{ data: DATA.zones.map(z => z.pct), backgroundColor: DATA.zones.map(z => z.couleur), borderColor: '#fff', borderWidth: 3 }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false } } }
+    });
+  },
+  paiements() {
+    new Chart(document.getElementById('chartPay'), {
+      type: 'doughnut',
+      data: { labels: DATA.methodes.map(m => m.nom), datasets: [{ data: DATA.methodes.map(m => m.montant), backgroundColor: DATA.methodes.map(m => m.couleur), borderColor: '#fff', borderWidth: 3 }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '66%', plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: c => ' ' + fcfa(c.raw) } } } }
+    });
+  },
+  rapports() {
+    new Chart(document.getElementById('chartEvoBig'), {
+      type: 'line',
+      data: { labels: DATA.semaine.labels, datasets: [{ data: DATA.semaine.valeurs, borderColor: '#0E7C7B', backgroundColor: 'rgba(14,124,123,.10)',
+        fill: true, tension: .35, pointBackgroundColor: '#0E7C7B', pointBorderColor: '#fff', pointBorderWidth: 2, pointRadius: 5 }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: tickStyle, grid: grille }, x: { ticks: tickStyle, grid: { display: false } } } }
+    });
+    new Chart(document.getElementById('chartZonesBig'), {
+      type: 'doughnut',
+      data: { labels: DATA.zones.map(z => z.nom), datasets: [{ data: DATA.zones.map(z => z.pct), backgroundColor: DATA.zones.map(z => z.couleur), borderColor: '#fff', borderWidth: 3 }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { display: false } } }
+    });
+    new Chart(document.getElementById('chartStations'), {
+      type: 'bar',
+      data: { labels: DATA.stations.map(s => s.nom), datasets: [{ data: DATA.stations.map(s => s.cap),
+        backgroundColor: DATA.stations.map(s => s.alerte ? '#D64545' : (s.cap > 75 ? '#E1863B' : '#0E7C7B')), borderRadius: 5, maxBarThickness: 20 }] },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: c => ' ' + c.raw + ' % de capacité résiduelle' } } },
+        scales: { x: { beginAtZero: true, max: 100, ticks: tickStyle, grid: grille }, y: { ticks: tickStyle, grid: { display: false } } } }
+    });
+  }
+};
+
+/* ---------- routeur ---------- */
+const ROUTES = {
+  dashboard:  { titre: 'Dashboard institutionnel', sous: 'Bonjour, bienvenue sur votre espace — Région de Dakar', url: 'dashboard' },
+  vidanges:   { titre: 'Vidanges',                 sous: 'Suivi des interventions de la journée',                 url: 'vidanges' },
+  gps:        { titre: 'Suivi GPS',                sous: 'Position des camions en temps réel',                    url: 'suivi-gps' },
+  operateurs: { titre: 'Opérateurs',               sous: 'Vidangeurs agréés et flotte rattachée',                 url: 'operateurs' },
+  menages:    { titre: 'Ménages',                  sous: 'Parc des foyers enregistrés sur la plateforme',         url: 'menages' },
+  paiements:  { titre: 'Paiements',                sous: 'Encaissements et moyens de paiement',                   url: 'paiements' },
+  preuves:    { titre: 'Preuves de dépotage',      sous: 'Traçabilité des dépotages en station',                  url: 'preuves-depotage' },
+  carte:      { titre: 'Carte',                    sous: 'Vue cartographique des opérations',                     url: 'carte' },
+  rapports:   { titre: 'Rapports & statistiques',  sous: 'Analyses consolidées de la région de Dakar',            url: 'rapports' },
+  parametres: { titre: 'Paramètres',               sous: 'Configuration du compte et des alertes',                url: 'parametres' }
+};
+
+const rendues = new Set(), graphes = new Set();
+
+function router(auChargement) {
+  const cle = (location.hash.replace(/^#\/?/, '') || 'dashboard');
+  const route = ROUTES[cle] ? cle : 'dashboard';
+
+  document.querySelectorAll('.view').forEach(v => { v.hidden = true; });
+  document.querySelectorAll('a.navitem').forEach(a => a.classList.toggle('active', a.dataset.route === route));
+
+  const vue = document.getElementById('view-' + route);
+  if (PAGES[route] && !rendues.has(route)) { vue.innerHTML = PAGES[route](); rendues.add(route); brancherOnglets(vue); }
+  vue.hidden = false;
+
+  document.getElementById('pageTitle').textContent = ROUTES[route].titre;
+  document.getElementById('pageSub').textContent   = ROUTES[route].sous;
+  document.getElementById('urlbar').textContent    = 'app.assainitrack.sn/' + ROUTES[route].url;
+
+  /* Chart.js ne peut pas mesurer un canvas masqué : on crée les graphiques
+     à la première ouverture réelle de la page, jamais avant. */
+  if (CHARTS[route] && !graphes.has(route)) { CHARTS[route](); graphes.add(route); }
+
+  /* on ne recadre que sur un changement de page, pas au chargement initial */
+  if (!auChargement) document.querySelector('.main').scrollIntoView({ block: 'start' });
+}
+
+/* filtrage par onglet — actif sur la page Vidanges, purement visuel ailleurs */
+function brancherOnglets(scope) {
+  scope.querySelectorAll('.tabs').forEach(groupe => {
+    groupe.addEventListener('click', e => {
+      const btn = e.target.closest('.tab');
+      if (!btn) return;
+      groupe.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b === btn));
+      const corps = document.getElementById('tbVidanges');
+      if (!corps || !groupe.closest('#view-vidanges')) return;
+
+      const f = btn.dataset.tab;
+      const cible = f === 'Terminées' ? 'Terminée' : f;
+      const tone = { 'En cours': 'teal', 'Terminée': 'success', 'À vérifier': 'amber' };
+      const liste = f === 'Toutes' ? DATA.vidanges : DATA.vidanges.filter(x => x.statut === cible);
+      corps.innerHTML = liste.map(x => `
+        <tr>
+          <td class="ref">${x.ref}</td>
+          <td><div class="who2"><div class="uav">${init2(x.menage)}</div><div>${x.menage}<div class="sub2">${x.zone}</div></div></div></td>
+          <td>${x.op}<div class="sub2">${x.camion}</div></td>
+          <td class="num">${x.h}</td>
+          <td class="num">${fcfa(x.montant)}</td>
+          <td>${pill(x.statut, tone[x.statut])}</td>
+        </tr>`).join('');
+      const total = { 'Toutes': DATA.kpi.jour, 'En cours': DATA.kpi.encours, 'Terminées': DATA.kpi.terminees, 'À vérifier': DATA.kpi.averifier }[f];
+      document.getElementById('ftVidanges').innerHTML = tfoot(liste.length, total, 'vidanges');
+    });
+  });
+}
+
+/* interrupteurs de la page Paramètres */
+document.addEventListener('click', e => {
+  const sw = e.target.closest('.sw');
+  if (sw) sw.classList.toggle('on');
 });
-new Chart(document.getElementById('chartRepart'), {
-  type:'doughnut',
-  data:{labels:['Parcelles Assainies','Pikine','Keur Massar','Autres'],
-    datasets:[{data:[32,26,21,21], backgroundColor:['#0E7C7B','#E1863B','#16324A','#C7C4B8'], borderColor:'#fff', borderWidth:3}]},
-  options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{display:false}}}
-});
+
+window.addEventListener('hashchange', () => router(false));
+router(true);
 </script>
 </body></html>
